@@ -1,8 +1,8 @@
 # Smart Willchair
 
-The Goal of this project is to give the wheelchair's user more independence over his life. We built a smart
-wheelchair with a robotic arm that can open doors and operate elevator buttons at will. The algorithm behind was built using
-OpenCV for the computer vision part, NodeJs as a backend and the real time data communication and c++ Arduino for the control algorithm.
+Many wheelchair users face difficulties opening doors and operating elevators. The goal of this project was to build a smart wheelchair with a depth-sensing camera, a tablet running a user-interface, and a robotic arm that opens the doors and operates elevator buttons at the user’s will. 
+
+The system uses image processing techniques to find the doorknob and open the door using the robotic arm, so that the user would no longer need to reach for the door. The integrated system operates under different weather conditions independent of a Wi-Fi connection, and functions without an AC power source up to a day.
 
 # Computer Vision Algorithm
 ## Initial Approach
