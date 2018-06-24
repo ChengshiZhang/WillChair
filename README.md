@@ -4,8 +4,8 @@ Many wheelchair users face difficulties opening doors and operating elevators. T
 
 The system uses image processing techniques to find the doorknob and open the door using the robotic arm, so that the user would no longer need to reach for the door. The integrated system operates under different weather conditions independent of a Wi-Fi connection, and functions without an AC power source up to a day.
 
-# Computer Vision Algorithm
-## Initial Approach
+## Computer Vision Algorithm
+### Initial Approach
 To implement the algorithm, we first took sample pictures in controlled environments.  
 
 In the pictures we took, we had the camera close to the door so that the door occupies the majority of the screen, and the camera is on the right side of the door. With these sample inputs, we can safely assume that the length of the door object is the longests among other objects in the image. Thus, we looped through every single pixel in the entire image horizontally. In every row of pixels, we find the length of the longest object among all the objects appeared in the same row. As we move to the next pixel (the pixel to the right of the current one), if the the difference of the RGB value of the current pixel and the RGB value of the previous pixel (the pixel to the left) is above a certain threshold, we will consider these two pixels to belong to two different objects; if the difference is below the threshold, we will consider them to be within the same object. This way, we are able to find the longest possible length on every row of the image.
@@ -18,12 +18,12 @@ Then, using the position of the objects we found, we can easily distinguish the 
 
 Thus, we have managed to successfully find the doorknob on our sample images.
 
-## Revision of Initial Approach
+### Revision of Initial Approach
 When we tested our algorithm against more low-resolution pictures, the result is not very optimal. The reason is that the adaptive thresholding method does not work well against low-resolution images. To apply adaptive thresholding, we have to cut off the outer frame of the target area in the image, since we need to apply the kernel to every pixel and the pixels on the edge will not be included. Since the doorknob is very close to the edge of the door, when the kernel has a large size, we will cut off a portion of the doorknob, thus messing up our algorithm. The reason we had some low-resolution sample images is because of the improved run-time. Since our current algorithm does not work well with these images, we do not have a choice be sticking with high resolution images and sacrifice performance.
 
 Also, the program does not work well with some images where there are shadows on the door, either from the doorknob itself or other objects. Since we are using RGB values when we find the door’s bounding box and apply adaptive thresholding, these shadows will severely affect the result. For example, suppose that there are shadows of the doorknob displayed on the door. The door color within and outside the shadow are drastically different, and will be treated as if they belong to different object when we apply the adaptive thresholding method. However, even though the RGB values are very different, these two regions will have similar hue values, since hue values are obtained independently from the saturation and lighting values. Thus, we changed all the instances where we used RGB values to using hue values instead, like the adaptive thresholding and finding the door’s bounding box. This way, our program is much more robust and and handles many more sample images than before.
 
-## Final Approach
+### Final Approach
 Even though our first approach has been a success so far, there are still some problems remaining to be solved:
 
 1. When the camera is not as close to the door, the program fails to recognize the door’s bounding box. This is because we assumed the door to have a longest width among other objects in the image.
@@ -48,5 +48,5 @@ Now that we have a segmented image with only the door’s region remaining, we c
 
 Then, after we find the rough region of the doorknob, we will find the first black pixel of the found region, and flood fill the rest of the black regions near it with red color. This way, we can find the precise shape of the doorknob and obtain very accurate results. On top of that, we also flood fill the regions near the first black pixel where the hue value is different from the average hue value of the door itself. This optimization is added because some of the doorknobs are made of steel and have reflections. Sometimes, the edge detection algorithm has a hard time recognizing the correct edges around the doorknob, and the result from the flood fill algorithm with include a portion of the doorknob as part of the door. Therefore, we added all nearby pixels with a distinct hue value than the door itself, and include them as part of our doorknob. This way, we are able to accurately locate almost all doorknobs in our sample images despite any lighting condition, camera angle, and random objects or glass windows on the door.
 
-# Acknowledgements
+## Acknowledgements
 This project was supported and advised by Professor Alan Pisano and Osama AlShaykh from Boston University.
