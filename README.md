@@ -1,4 +1,4 @@
-# Smart Willchair
+# Willchair
 
 Many wheelchair users face difficulties opening doors and operating elevators. The goal of this project was to build a smart wheelchair with a depth-sensing camera, a tablet running a user-interface, and a robotic arm that opens the doors and operates elevator buttons at the user’s will. 
 
